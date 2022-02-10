@@ -1,28 +1,18 @@
 const express=require('express')
 const app=express();
+const session=require('express-session')
+const PublicRoutes=require('./routes/public.routes')
 
 app.set('view engine','ejs')
 
-
-app.get('/',(req,res)=>{
-    res.render('pages/home')
-})
-
-app.get('/about',(req,res)=>{
-    res.render('pages/about')
-})
+app.use(session({
+    secret:'secret@12',
+    resave:false,
+    saveUninitialized:false
+}))
 
 
-
-
-
-
-
-
-
-
-
-
+app.use('/',PublicRoutes)
 
 app.listen(3000,()=>{
     console.log("Server Started at 3000")
