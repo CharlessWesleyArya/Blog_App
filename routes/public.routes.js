@@ -1,20 +1,23 @@
-const router=require('express').Router()
+const router = require('express').Router()
 
-router.get('/',(req,res)=>{
+router.get('/', (req, res) => {
     res.render('pages/home')
 })
 
-router.get('/about',(req,res)=>{
+router.get('/about', (req, res) => {
     res.render('pages/about')
 })
-router.get('/signup',(req,res)=>{
+router.get('/signup', (req, res) => {
     res.render('pages/signup')
 })
-router.get('/signin',(req,res)=>{
+router.get('/signin', (req, res) => {
     res.render('pages/signin')
+})
+router.post('/signin', (req, res) => {
+    console.log(req.body);
 })
 
 
 
 
-module.exports=router;
+module.exports = router;

@@ -10,7 +10,8 @@ app.use(session({
     resave:false,
     saveUninitialized:false
 }))
-
+app.use(express.json())
+app.use(express.urlencoded({extended:false}))
 
 app.use('/',PublicRoutes)
 
