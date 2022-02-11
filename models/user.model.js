@@ -4,8 +4,11 @@ const PATH = path.join(__dirname, '..', 'data', 'user.data.json')
 var findAll = function () {
     return readFile(PATH);
 }
-var findByUserName = function () {
-
+var findByUserName = async function (username) {
+    var users = await readFile(PATH);
+    if (users[username]) {
+        return users[username];
+    }
 }
 var checkUserName = async function (username) {
     var users = await readFile(PATH)

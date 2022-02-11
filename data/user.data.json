@@ -1,1 +1,14 @@
-{"wesley":{"username":"wesley","name":"charless wesley","mobile":"8019210365","password":"123"}}
+{
+    "wesley": {
+        "username": "wesley",
+        "name": "charless wesley",
+        "mobile": "8019210365",
+        "password": "123"
+    },
+    "qqq": {
+        "username": "qqq",
+        "name": "qqq",
+        "mobile": "q",
+        "password": "qq"
+    }
+}
