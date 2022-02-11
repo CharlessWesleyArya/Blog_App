@@ -6,8 +6,11 @@
 </head>
 
 <body>
-   
-    <h1>Posts</h1>
+    <%- include('../partials/nav.ejs',{path:'/',username:username }) %>
+        <h1>Posts</h1>
+        <% for( let postIdx = 0; postIdx < posts.length; postIdx++ ) { %>
+            <%- include('../partials/postItem.ejs',{post:posts[postIdx]})  %> 
+        <% } %>
 </body>
 
 </html>

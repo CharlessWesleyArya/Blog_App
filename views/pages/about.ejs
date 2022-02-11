@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <%- include('../partials/head.ejs',{title:"About"})  %> 
+    <%- include('../partials/head.ejs',{title:"About"}) %>
 </head>
+
 <body>
-    <h1>we are in About Page</h1>
+    <%- include('../partials/nav.ejs',{path:'/about',username:username}) %>
+        <h1>we are in About Page</h1>
 </body>
+
 </html>
