@@ -1,12 +1,27 @@
-exports.findAll=function(){
+const { readFile, writeFile } = require('../helper/file.helper')
+const path = require('path');
+const PATH = path.join(__dirname, '..', 'data', 'user.data.json')
+var findAll = function () {
+    return readFile(PATH);
+}
+var findByUserName = function () {
 
 }
-exports.findByUserName=function(){
-
+var checkUserName = async function (username) {
+    var users = await readFile(PATH)
+    if (users[username.toLowerCase()]) {
+        return true;
+    }
+    return false;
 }
-exports.checkUserName=function(){
-
+var create = async function (user) {
+    var users = await readFile(PATH)
+    users[user.username] = user
+    return writeFile(PATH, users)
 }
-exports.create=function(){
-    
+module.exports = {
+    findAll,
+    findByUserName,
+    checkUserName,
+    create
 }

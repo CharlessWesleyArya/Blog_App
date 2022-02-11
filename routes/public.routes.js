@@ -1,5 +1,7 @@
 const router = require('express').Router()
 
+const UserModel = require('../models/user.model')
+
 router.get('/', (req, res) => {
     res.render('pages/home')
 })
@@ -17,8 +19,15 @@ router.post('/signin', (req, res) => {
     req.session.username = req.body.username;
     res.redirect('/')
 })
-router.post('/signup', (req, res) => {
-    const { username, name, mobile, password } = req.body
+router.post('/signup', async (req, res) => {
+    const { username, name, mobile, password } = req.body;
+    var isPresent = await UserModel.checkUserName(username);
+    if (isPresent) {
+
+    }
+    await UserModel.create({ ...req.body, username: username.toLowerCase() })
+    req.session.username = username;
+    res.redirect('/')
 })
 
 
