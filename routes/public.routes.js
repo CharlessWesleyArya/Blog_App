@@ -14,7 +14,11 @@ router.get('/signin', (req, res) => {
     res.render('pages/signin')
 })
 router.post('/signin', (req, res) => {
-    console.log(req.body);
+    req.session.username = req.body.username;
+    res.redirect('/')
+})
+router.post('/signup', (req, res) => {
+    const { username, name, mobile, password } = req.body
 })
 
 

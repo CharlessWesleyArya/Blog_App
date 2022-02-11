@@ -1,19 +1,23 @@
 const express=require('express')
 const app=express();
 const session=require('express-session')
-const PublicRoutes=require('./routes/public.routes')
+const publicRoutes=require('./routes/public.routes')
+const FileStore=require('session-file-store')(session)
 
 app.set('view engine','ejs')
 
 app.use(session({
     secret:'secret@12',
     resave:false,
-    saveUninitialized:false
+    saveUninitialized:false,
+    store:new FileStore({
+        retries:0
+    })
 }))
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 
-app.use('/',PublicRoutes)
+app.use('/',publicRoutes)
 
 app.listen(3000,()=>{
     console.log("Server Started at 3000")
