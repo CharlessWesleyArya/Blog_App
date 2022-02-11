@@ -19,7 +19,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 
 app.use('/',publicRoutes)
-app.use('/post',PostRoutes)
+app.use('/posts',PostRoutes)
 
 app.listen(3000,()=>{
     console.log("Server Started at 3000")

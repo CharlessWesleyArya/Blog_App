@@ -6,11 +6,20 @@
 </head>
 
 <body>
-    <%- include('../partials/nav.ejs',{path:'/',username:username }) %>
-        <h1>Posts</h1>
-        <% for( let postIdx = 0; postIdx < posts.length; postIdx++ ) { %>
-            <%- include('../partials/postItem.ejs',{post:posts[postIdx]})  %> 
-        <% } %>
+    <%- include('../partials/nav.ejs',{path:'/posts',username:username }) %>
+        <div class="container">
+            <div class="row">
+                <% if (posts.length===0) { %>
+                <div class="col-md-12" style="text-align:center; margin-top: 35px;">
+                    <h4 class="card-text">No Posts Yet</h4>
+                    <a href="/posts/create" class="btn btn-primary">Create Post</a>
+                </div>
+                <% } %>
+                <% for( let postIdx = 0; postIdx < posts.length; postIdx++ ) { %>
+                    <%- include('../partials/postItem.ejs',{post:posts[postIdx]})  %> 
+                <% } %>
+            </div>
+        </div>
 </body>
 
 </html>

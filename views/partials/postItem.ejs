@@ -1,2 +1,18 @@
-<h1><%= post.title %> </h1>
-<h4><%= post.description %> </h4>
+<style>
+    .post-item{
+        margin-top: 30px;
+    }
+    .post-content{
+        padding: 30px;
+    }
+</style>
+<div class="col-md-4 post-item">
+    <div class="card">
+        <div class="card-body post-content">
+            <h4 class="card-title"><%= post.title %> </h4>
+            <h6 class="card-text"><%= post.description %> </h6>
+            <a href="" class="btn btn-primary">Edit</a>
+            <a href="" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+</div>
