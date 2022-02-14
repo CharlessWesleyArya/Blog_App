@@ -2,9 +2,11 @@ const express=require('express')
 const app=express();
 const session=require('express-session')
 const publicRoutes=require('./routes/public.routes')
-const PostRoutes=require('./routes/post.route')
+const PostRoutes=require('./routes/post.route');
+const path=require('path')
 const FileStore=require('session-file-store')(session)
 
+app.use('/uploads',express.static(path.join(__dirname,'uploads')))
 app.set('view engine','ejs')
 
 app.use(session({
