@@ -29,6 +29,7 @@ router.post('/signin', async (req, res) => {
     var user = await UserModel.findByUserName(username.toLowerCase());
     if (user && user.password === password) {
         req.session.username = username;
+        console.log("not coming")
         return res.redirect('/')
     }
 })
