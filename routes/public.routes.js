@@ -1,28 +1,36 @@
 const router = require('express').Router()
 
 const UserModel = require('../models/user.model')
-const authMiddleware=require('../middlewares/auth.middleware')
+const authMiddleware = require('../middlewares/auth.middleware')
+const postModel = require('../models/post.model')
+router.use(function (req, res, next) {
+    var username = req.session && req.session.username;
+    if (!username) {
+        res.locals.username = '';
+    }
+    else {
+        res.locals.username = username;
+    }
+    next();
+})
 
-router.get('/',authMiddleware, (req, res) => {
-    res.render('pages/home', {
-        username: req.session ? req.session.username : null
-    })
+router.get('/', /* authMiddleware, */(req, res) => {
+    postModel.findAll()
+        .then(data => {
+            res.render('pages/home', {
+                posts: data
+            })
+        })
 })
 
 router.get('/about', (req, res) => {
-    res.render('pages/about', {
-        username: req.session ? req.session.username : null
-    })
+    res.render('pages/about')
 })
 router.get('/signup', (req, res) => {
-    res.render('pages/signup', {
-        username: req.session ? req.session.username : null
-    })
+    res.render('pages/signup')
 })
 router.get('/signin', (req, res) => {
-    res.render('pages/signin', {
-        username: req.session ? req.session.username : null
-    })
+    res.render('pages/signin')
 })
 router.post('/signin', async (req, res) => {
     var { username, password } = req.body
