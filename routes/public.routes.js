@@ -13,9 +13,13 @@ router.use(function (req, res, next) {
     }
     next();
 })
+function navHelper() {
+    return postModel.findAll()
+        .then(data => data)
 
+}
 router.get('/', /* authMiddleware, */(req, res) => {
-    postModel.findAll()
+    navHelper()
         .then(data => {
             res.render('pages/home', {
                 posts: data
@@ -27,29 +31,58 @@ router.get('/about', (req, res) => {
     res.render('pages/about')
 })
 router.get('/signup', (req, res) => {
-    res.render('pages/signup')
+    res.render('pages/signup', {
+        username: null,
+        name: null,
+        password: null,
+        mobile: null,
+        error: null
+    })
 })
 router.get('/signin', (req, res) => {
-    res.render('pages/signin')
+    res.render('pages/signin', {
+        user: '',
+        password: '',
+        error: null
+    })
 })
 router.post('/signin', async (req, res) => {
     var { username, password } = req.body
     var user = await UserModel.findByUserName(username.toLowerCase());
     if (user && user.password === password) {
         req.session.username = username;
-        console.log("not coming")
-        return res.redirect('/')
+        res.locals.username = username;
+        return navHelper()
+            .then(data => {
+                res.render('pages/home', {
+                    posts: data
+                })
+            })
     }
+    res.render('pages/signin', {
+        user: username,
+        password: password,
+        error: 'Username and Password dont match'
+    })
 })
 router.post('/signup', async (req, res) => {
-    const { username, name, mobile, password } = req.body;
+    const { username } = req.body;
     var isPresent = await UserModel.checkUserName(username);
     if (isPresent) {
-        return;
+        return res.render('pages/signup',{
+            ...req.body,
+            error:'Username is Alreay Registered'
+        })
     }
     await UserModel.create({ ...req.body, username: username.toLowerCase() })
     req.session.username = username;
-    res.redirect('/')
+    res.locals.username = username;
+    navHelper()
+        .then(data => {
+            res.render('pages/home', {
+                posts: data
+            })
+        })
 })
 
 router.get('/logout', async (req, res) => {
