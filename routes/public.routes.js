@@ -1,5 +1,5 @@
 const router = require('express').Router()
-
+const { body, validationResult } = require('express-validator')
 const UserModel = require('../models/user.model')
 const authMiddleware = require('../middlewares/auth.middleware')
 const postModel = require('../models/post.model')
@@ -46,7 +46,23 @@ router.get('/signin', (req, res) => {
         error: null
     })
 })
-router.post('/signin', async (req, res) => {
+router.post('/signin', [
+    body('username').not().isEmpty().withMessage('please enter Username'),
+    body('password').not().isEmpty().withMessage("please Enter Password")
+], async (req, res) => {
+    var errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        var errorsString = errors.array().reduce(function (acc, val) {
+            acc = acc + val.msg + ' ';
+            return acc;
+        }, '')
+        res.render('pages/signin', {
+            ...req.body,
+            user: req.body.username,
+            password: req.body.password,
+            error: errorsString
+        })
+    }
     var { username, password } = req.body
     var user = await UserModel.findByUserName(username.toLowerCase());
     if (user && user.password === password) {
@@ -69,9 +85,9 @@ router.post('/signup', async (req, res) => {
     const { username } = req.body;
     var isPresent = await UserModel.checkUserName(username);
     if (isPresent) {
-        return res.render('pages/signup',{
+        return res.render('pages/signup', {
             ...req.body,
-            error:'Username is Alreay Registered'
+            error: 'Username is Alreay Registered'
         })
     }
     await UserModel.create({ ...req.body, username: username.toLowerCase() })
