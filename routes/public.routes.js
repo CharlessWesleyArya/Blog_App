@@ -81,13 +81,41 @@ router.post('/signin', [
         error: 'Username and Password dont match'
     })
 })
-router.post('/signup', async (req, res) => {
+router.post('/signup', [
+    body('username').not().isEmpty().withMessage('Username is Required')
+        .bail()
+        .custom(function (value) {
+            return new Promise((resolve, reject) => {
+                UserModel.checkUserName(value)
+                    .then(isPresent => {
+                        if (isPresent) {
+                            return reject('Username is already Present')
+                        }
+                        resolve()
+                    })
+            })
+        })
+], async (req, res) => {
     const { username } = req.body;
+    {/*non asynchronous type
     var isPresent = await UserModel.checkUserName(username);
     if (isPresent) {
         return res.render('pages/signup', {
             ...req.body,
             error: 'Username is Alreay Registered'
+        })
+    } */}
+    var errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        var errorsString = errors.array().reduce(function (acc, val) {
+            acc = acc + val.msg + ' ';
+            return acc;
+        }, '')
+        res.render('pages/signup', {
+            ...req.body,
+            user: req.body.username,
+            password: req.body.password,
+            error: errorsString
         })
     }
     await UserModel.create({ ...req.body, username: username.toLowerCase() })
